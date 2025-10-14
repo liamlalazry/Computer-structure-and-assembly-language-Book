@@ -1,0 +1,9 @@
+because the way of counting based on 2 and so each digit is a *2 of the first one the way to check if number is divided by 4 would be AND 00000011 AS THE NUMBER WOULD ALWAYS END WITH 00 IF ANY OF THE BITS IS 1THOSE AFTER THE "AND CALC"  THE NUMBER IS CANT BE DIVIDED BY 4
+LETS TRY
+111100
+000011
+WILL BE 00 AND THE NUMBER IS 60
+LETS TRY 45
+101101
+000011
+WE GOT 01 SO IT NOT DIVIDED BY 4.
