@@ -82,3 +82,44 @@ exit:
 END start
 
 Q e
+IDEAL
+MODEL small
+STACK 100h
+DATASEG
+var1 db ?
+CODESEG
+
+start:
+	mov ax, @data
+	mov ds, ax
+	xor ax, ax
+	xor cx,cx
+	;input 1
+	mov ah, 1h
+	int 21h
+	sub al, '0'
+	mov bl,al
+	;input 2
+	mov ah, 1h
+	int 21h
+	sub al, '0'
+	mov var1,al
+colMaker:
+	mov cl,bl
+	
+rowMaker:
+	mov dl, 'x'
+	mov ah, 2h
+	int 21h
+	loop rowMaker
+
+	mov dl, 0ah
+	mov ah, 2h
+	int 21h
+	dec [var1]
+	cmp [var1],0
+	jne colMaker
+exit:
+	mov ax, 4c00h
+	int 21h
+END start
