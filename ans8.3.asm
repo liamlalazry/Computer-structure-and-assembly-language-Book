@@ -1,4 +1,4 @@
-Q a the writer not refering ax = 0 and still meantion signed number so i anser as a sign version when ax =0 decresing one...
+Q a 
 
 IDEAL
 MODEL small
@@ -13,8 +13,8 @@ start:
 	mov ds, ax
 	xor ax, ax
 	cmp ax,0
-	jl decrease
-  
+	jg decrease
+    jmp exit
 decrease:
 	dec ax
 
@@ -37,7 +37,8 @@ start:
 	mov ds, ax
 	xor ax, ax
 	cmp ax,bx
-	je posting
+	jne posting
+	jmp exit
   
 posting:
   mov ax,bx
@@ -52,8 +53,8 @@ IDEAL
 MODEL small
 STACK 100h
 DATASEG
- var1 db 7
- var2 db 3
+ var1 dw 7
+ var2 dw 3
 CODESEG
 
 start:
@@ -61,15 +62,13 @@ start:
 	mov ax, @data
 	mov ds, ax
 	xor ax, ax
-  mov ax,[var1]
+    mov ax,[var1]
 	cmp ax,[var2]
-	jbe change
-  ja zero:
+	ja change
+    xor ax,ax
+	jmp exit
 change:
   mov ax,1
-zero:
-  xor ax,ax
-
 exit:
 	mov ax, 4c00h
 	int 21h
@@ -80,8 +79,8 @@ IDEAL
 MODEL small
 STACK 100h
 DATASEG
- var1 db 7
- var2 db 3
+ var1 dw 7
+ var2 dw 3
 CODESEG
 
 start:
@@ -91,10 +90,10 @@ start:
 	xor ax, ax
     mov ax,[var1]
 	cmp ax,[var2]
-	jne adding:
-    je  substracting:
+    jne  substracting
 adding:
     add ax,[var2]
+	jmp exit
 substracting:
     sub ax,[var2]
 
@@ -103,7 +102,7 @@ exit:
 	int 21h
 END start
 
-Q e
+Q e part b can also be solved by using unsigned...
 IDEAL
 MODEL small
 STACK 100h
@@ -113,21 +112,23 @@ TimesToPrintX db 3
 CODESEG
 
 start:
-;Q a
 	mov ax, @data
 	mov ds, ax
 	xor ax, ax
 	xor cx,cx
-	cmp [TimesToPrintX],cx
-	jne 
+	cmp [TimesToPrintX],0
+	jle exit
+compare:
+	cmp [TimesToPrintX],cl
+	jne printer
+	jmp exit
 printer:
 	mov dl, 'x'
 	mov ah, 2h
 	int 21h
-	inc cx
+	inc cl
+	jmp compare
 exit:
 	mov ax, 4c00h
 	int 21h
 END start
-
-
