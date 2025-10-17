@@ -25,3 +25,37 @@ exit:
     int 21h
 END start
 
+
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+var dw 1
+var2 dw 2
+var3 dw 3
+var4 dw 4
+CODESEG
+proc ZeroMaker
+    pop ax
+    mov cx,4
+    pop bx
+calc:
+    mov dx,[word ptr bx]
+    xor [word ptr bx],dx
+    add bx,2
+    loop calc
+    push ax
+    ret
+
+endp ZeroMaker
+
+start:
+    mov ax, @data
+    mov ds, ax
+    push offset var 
+    call ZeroMaker
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
+
