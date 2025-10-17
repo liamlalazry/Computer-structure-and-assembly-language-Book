@@ -1,4 +1,4 @@
-
+;Q a
 IDEAL
 MODEL small
 Stack 100h
@@ -25,6 +25,7 @@ exit:
     int 21h
 END start
 
+;Q b
 
 IDEAL
 MODEL small
@@ -54,6 +55,37 @@ start:
     mov ds, ax
     push offset var 
     call ZeroMaker
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
+
+;Q c
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+var dw 1
+var2 dw 2
+placeHolder dw 0
+CODESEG
+proc Switcher
+    pop ax
+    pop bx
+    mov dx,[bx]
+    mov cx,[word ptr bx + 2]
+    mov [bx],cx
+    mov [bx+2],dx
+    push ax
+    ret
+
+endp Switcher
+
+start:
+    mov ax, @data
+    mov ds, ax
+    push offset var 
+    call Switcher
 exit: 
     mov ax, 4c00h
     int 21h
