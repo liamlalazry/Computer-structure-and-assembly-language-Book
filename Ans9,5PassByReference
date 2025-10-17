@@ -1,0 +1,27 @@
+
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+var dw 1
+CODESEG
+proc increase
+    pop ax
+    pop bx
+    inc [word ptr bx]
+    push ax
+    ret
+
+endp increase
+
+start :
+    mov ax, @data
+    mov ds, ax
+    push offset var 
+    call increase
+    mov bx,[var]
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
+
