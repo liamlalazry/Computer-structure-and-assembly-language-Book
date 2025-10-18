@@ -1,0 +1,34 @@
+
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+CODESEG
+LocalX equ [bp - 2]
+LocalY equ [bp - 4]
+LocalZ equ [bp - 6]
+proc XYZ
+    push bp
+    mov bp,sp
+    sub sp,6
+    mov ax,[bp + 4]
+    mov LocalX,ax
+    mov ax,[bp + 6]
+    mov LocalY,ax
+    mov ax,[bp + 8]
+    mov LocalZ,ax
+    add sp,6
+    pop bp
+    ret 
+endp XYZ
+start:
+    mov ax, @data
+    mov ds, ax
+    push 1
+    push 2
+    push 3
+    call XYZ
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
