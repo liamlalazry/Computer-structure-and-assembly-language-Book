@@ -41,77 +41,69 @@ exit:
     int 21h
 END start
 
-
-;Q b
-
 ;Q b
 IDEAL
 MODEL small
 Stack 100h
 DATASEG
 Arr dw 4,3,1,5,2
-var dw ?
 CODESEG
 FirstElementAddress equ [bp + 6]
 NumOfElements equ [bp + 4]
-SmallIndex equ [bp - 2]
+SmallIndex equ [bp + 4]
 
 proc SortArray
     push bp
-    mov bp,sp 
-    call FindMin
-    push si
-    call Swap
-    inc FirstElementAddress
+    mov bp, sp
+    mov cx, NumOfElements     
+sortLoop:
+    cmp cx, 1                 
+    jle doneSorting
+    push FirstElementAddress  
+    push cx                   
+    call FindMin              
+    push si                   
+    call Swap                 
+    add [word ptr bp + 6], 2  
+    dec cx                    
+    jmp sortLoop
+doneSorting:
     pop bp
-    ret
+    ret 4                    
 endp SortArray
-
 proc FindMin
-    mov cx,NumOfElements
-    mov bx,0ffffh
-    mov di,FirstElementAddress
+    push bp
+    mov bp, sp
+    mov cx, NumOfElements    
+    mov bx, 0ffffh           
+    mov di, FirstElementAddress
+    mov si, di                
 action:    
-    mov ax,[di]
-    cmp ax,bx
-    jg continue
-replacer:
-    mov bx,ax
-    mov si,di
-    
+    mov ax, [di]     
+    cmp ax, bx 
+    jae continue          
+    mov bx, ax        
+    mov si, di    
 continue:
-    inc di
+    add di, 2             
     loop action
-    ret 
+    pop bp
+    ret 4          
 endp FindMin
+
 proc Swap
-    xor bx,bx
-    mov di,SmallIndex
-    mov bx,[di]
-    mov di,FirstElementAddress
-    mov var,[di]
-    xor ax,ax
-    mov di,var
-    mov [SmallIndex],di
-    mov di,[FirstElementAddress]
-    mov [di],bx
-
-    ;smallIndex
-    ;FirstElementAddress    
-    
-
-    
-    ret
+    push bp
+    mov bp, sp
+    mov di, SmallIndex        
+    mov si, FirstElementAddress  
+    mov ax, [di]            
+    mov bx, [si]             
+    mov [si], ax        
+    mov [di], bx             
+    pop bp
+    ret 2                  
 endp Swap
 start:
     mov ax, @data
     mov ds, ax
-    xor ax,ax
-    xor di,di
-    push offset Arr
-    push 5
-    call SortArray
-exit: 
-    mov ax, 4c00h
-    int 21h
-END start
+    push offs
