@@ -62,3 +62,39 @@ exit:
     mov ax, 4c00h
     int 21h
 END start
+;Q c
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+CODESEG
+proc inputKeyBoardChecker
+    mov cx,10
+input:
+    mov ah, 1
+    int 21h
+Checker:
+    cmp al,47
+    ja AnotherCheck
+    ret
+AnotherCheck:
+     cmp al,58
+     jb adding
+     ret
+adding: 
+    sub al,30h
+    add dl,al
+    loop input
+    mov ah, 2
+    int 21h
+    ret
+endp inputKeyBoardChecker
+start:
+    mov ax, @data
+    mov ds, ax
+    xor dl,dl
+    call inputKeyBoardChecker
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
