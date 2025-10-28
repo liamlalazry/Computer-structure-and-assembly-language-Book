@@ -103,26 +103,28 @@ IDEAL
 MODEL small
 Stack 100h
 DATASEG
-CODESEG
-   
+var1 db ?
+var2 db ?
+CODESEG  
 start:
     mov ax, @data
     mov ds, ax
     xor ax,ax
     xor dx,dx
     mov cx,4
-    mov bl,10
+    mov bx,10
 calc:
-    mul bl
+    mul bx
+    mov [var1],al
+    mov [var2],ah
     mov ah, 1
     int 21h
-    xor ah,ah
     sub al,30h
-    add dx,ax
+    mov dl,al
+    mov al,[var1]
+    mov ah,[var2]
+    add ax,dx
     loop calc
-    mov dl,al 
-    mov ah, 2
-    int 21h
 exit: 
     mov ax, 4c00h
     int 21h
