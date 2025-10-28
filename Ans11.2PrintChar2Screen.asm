@@ -99,3 +99,45 @@ exit:
     mov ax, 4c00h
     int 21h
 END start
+;Q d
+;Q a
+IDEAL
+MODEL small
+Stack 100h
+DATASEG
+CODESEG
+proc inputDigit
+    mov ah, 1
+    int 21h
+    mov bl,al
+    mov dh,bl
+    mov ah, 1
+    int 21h
+    sub bl,al
+    cmp bl,0
+    jl printNegative
+printA:
+    add bl,30h
+    mov dl,bl
+    mov ah, 2
+    int 21h
+    ret
+printNegative:
+    sub al,dh
+    mov cl,al
+    mov dl, '-' 
+    mov ah, 2
+    int 21h
+    mov dl,cl
+    mov ah, 2
+    int 21h
+    ret 
+endp inputDigit
+start:
+    mov ax, @data
+    mov ds, ax
+    call inputDigit
+exit: 
+    mov ax, 4c00h
+    int 21h
+END start
