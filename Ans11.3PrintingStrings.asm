@@ -36,3 +36,24 @@ exit:
     mov ax, 4C00h
     int 21h
 END start
+;Q a + b
+IDEAL
+MODEL small
+STACK 100h
+DATASEG
+ msg db 'The only true defeat is when u decided not to try again!!!',10,13,'$'
+ myName db 'Liam','$'
+CODESEG
+start:
+    mov ax, @data
+    mov ds, ax
+    lea dx,[msg] 
+    mov ah, 9h
+    int 21h
+    lea dx,[MyName]
+    mov ah, 9h
+    int 21h
+exit:
+    mov ax, 4C00h
+    int 21h
+END start
