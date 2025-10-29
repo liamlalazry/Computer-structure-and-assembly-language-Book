@@ -41,7 +41,7 @@ IDEAL
 MODEL small
 STACK 100h
 DATASEG
- msg db 'The only true defeat is when u decided not to try again!!!',10,13,'$'
+ msg db 'The only true defeat is when u decided not to try again as long u keep trying u still in the game ! :)',10,13,'$'
  myName db 'Liam','$'
 CODESEG
 start:
